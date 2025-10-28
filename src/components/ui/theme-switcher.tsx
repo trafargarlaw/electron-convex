@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { Monitor, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 const themes = [
@@ -24,23 +24,11 @@ const themes = [
 ];
 
 export type ThemeSwitcherProps = {
-  value?: "light" | "dark" | "system";
-  onChange?: (theme: "light" | "dark" | "system") => void;
-  defaultValue?: "light" | "dark" | "system";
   className?: string;
 };
 
-export const ThemeSwitcher = ({
-  value,
-  onChange,
-  defaultValue,
-  className,
-}: ThemeSwitcherProps) => {
-  const [theme, setTheme] = useControllableState({
-    defaultProp: defaultValue || "system",
-    prop: value,
-    onChange,
-  });
+export const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch
@@ -67,7 +55,7 @@ export const ThemeSwitcher = ({
             type="button"
             key={key}
             className="relative h-6 w-6 rounded-full"
-            onClick={() => setTheme(key as "light" | "dark" | "system")}
+            onClick={() => setTheme(key)}
             aria-label={label}
           >
             {isActive && (
